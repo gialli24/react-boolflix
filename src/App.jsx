@@ -1,11 +1,14 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SearchPage from "./pages/SearchPage";
+
 function App() {
-
-  const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-  console.log(TMDB_API_KEY);
-
   return (
     <>
-
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SearchPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
