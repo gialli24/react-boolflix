@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
 export default function SearchPage() {
 
     /* Flags */
@@ -33,13 +36,13 @@ export default function SearchPage() {
     const searchMoviesEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=`;
     const searchTvEndpoint = `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=`;
 
-    function fetchSearch(endpoint, searchValue, setValue) {
+    function fetchSearch(endpoint, searchValue, storeData) {
         const fullEndpoint = endpoint + searchValue;
 
         fetch(fullEndpoint)
             .then(res => res.json())
             .then(data => {
-                setValue(data.results);
+                storeData(data.results);
             })
 
     }
@@ -47,6 +50,17 @@ export default function SearchPage() {
     function handleSearch(searchValue) {
         fetchSearch(searchMoviesEndpoint, searchValue, setMovies);
         fetchSearch(searchTvEndpoint, searchValue, setSeries);
+    }
+
+    /* hearts */
+    function renderHearts(n) {
+        const heartList = [];
+
+        for (let i = 0; i < n; i++) {
+            heartList.push(<FontAwesomeIcon key={i} icon={faHeart} />);
+        }
+
+        return heartList;
     }
 
     return (
@@ -60,25 +74,39 @@ export default function SearchPage() {
 
                 <h2>Movies</h2>
 
+                {console.log(series)}
+
                 <ul>
                     {
 
-                        movies.map((movie, i) => (
+                        movies.map((movie, i) => {
 
-                            <li key={i} className="mb-1" >
-                                <div><strong>Titolo: </strong>{movie.title}</div>
+                            const { poster_path, title, original_title, original_language, vote_average } = movie;
 
-                                <div><strong>Titolo originale: </strong>{movie.original_title}</div>
+                            const vote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
 
-                                <div>
-                                    <strong>Lingua: </strong>
-                                    <span className={`fi fi-${handleFLags(languagesCodes, movie.original_language)}`}></span>
-                                </div>
+                            return (
+                                <li key={i} className="mb-1" >
 
-                                <div><strong>Voto: </strong>{movie.vote_average}</div>
-                            </li>
+                                    <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt="" />
 
-                        ))
+                                    <div><strong>Titolo: </strong>{title}</div>
+
+                                    <div><strong>Titolo originale: </strong>{original_title}</div>
+
+                                    <div>
+                                        <strong>Lingua: </strong>
+                                        <span className={`fi fi-${handleFLags(languagesCodes, original_language)}`}></span>
+                                    </div>
+
+                                    <div>
+                                        <strong>Voto: </strong>
+                                        {renderHearts(vote)}
+                                    </div>
+                                </li>
+                            )
+
+                        })
 
                     }
                 </ul>
@@ -91,22 +119,34 @@ export default function SearchPage() {
                 <ul>
                     {
 
-                        series.map((serie, i) => (
+                        series.map((serie, i) => {
 
-                            <li key={i} className="mb-1" >
-                                <div><strong>Titolo: </strong>{serie.name}</div>
+                            const { poster_path, name, original_name, original_language, vote_average } = serie;
 
-                                <div><strong>Titolo originale: </strong>{serie.original_name}</div>
+                            const vote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
 
-                                <div>
-                                    <strong>Lingua: </strong>
-                                    <span className={`fi fi-${handleFLags(languagesCodes, serie.original_language)}`}></span>
-                                </div>
+                            return (
+                                <li key={i} className="mb-1" >
 
-                                <div><strong>Voto: </strong>{serie.vote_average}</div>
-                            </li>
+                                    <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt="" />
 
-                        ))
+                                    <div><strong>Titolo: </strong>{name}</div>
+
+                                    <div><strong>Titolo originale: </strong>{original_name}</div>
+
+                                    <div>
+                                        <strong>Lingua: </strong>
+                                        <span className={`fi fi-${handleFLags(languagesCodes, original_language)}`}></span>
+                                    </div>
+
+                                    <div>
+                                        <strong>Voto: </strong>
+                                        {renderHearts(vote)}
+                                    </div>
+                                </li>
+                            )
+
+                        })
 
                     }
                 </ul>
