@@ -3,15 +3,15 @@ import { useState } from "react";
 export default function SearchPage() {
 
     /* Flags */
-    const languageCustomFlags = {
+    const languagesCodes = {
         en: "gb",
         ja: "jp",
         zh: "cn",
         da: "dk"
     }
 
-    function handleFLags(languageCustomFlags, code) {
-        const flagCode = languageCustomFlags[code];
+    function handleFLags(languagesCodes, code) {
+        const flagCode = languagesCodes[code];
 
 
         if (!flagCode) {
@@ -21,9 +21,9 @@ export default function SearchPage() {
         return flagCode;
     }
 
-
     /* Search reactive variables */
-    const [results, setResults] = useState([]);
+    const [movies, setMovies] = useState([]);
+    const [series, setSeries] = useState([]);
 
     /* Search */
     const [searchValue, setSearchValue] = useState("");
@@ -33,26 +33,20 @@ export default function SearchPage() {
     const searchMoviesEndpoint = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=`;
     const searchTvEndpoint = `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_API_KEY}&query=`;
 
-    function fetchSearch(endpoint, searchValue) {
+    function fetchSearch(endpoint, searchValue, setValue) {
         const fullEndpoint = endpoint + searchValue;
 
         fetch(fullEndpoint)
             .then(res => res.json())
             .then(data => {
-                return data.results;
+                setValue(data.results);
             })
-
-        return [];
 
     }
 
     function handleSearch(searchValue) {
-        let movies, tv = [];
-
-        movies = fetchSearch(searchMoviesEndpoint, searchValue);
-        tv = fetchSearch(searchTvEndpoint, searchValue);
-
-        console.log(movies, tv);
+        fetchSearch(searchMoviesEndpoint, searchValue, setMovies);
+        fetchSearch(searchTvEndpoint, searchValue, setSeries);
     }
 
     return (
@@ -62,27 +56,61 @@ export default function SearchPage() {
                 <button onClick={() => handleSearch(searchValue)}>Cerca</button>
             </div>
 
-            <div className="query-list">
+            <section id="movies" className="query-list">
+
+                <h2>Movies</h2>
+
                 <ul>
                     {
 
-                        results.map((result, i) => (
+                        movies.map((movie, i) => (
 
                             <li key={i} className="mb-1" >
-                                <div><strong>Titolo: </strong>{result.title}</div>
-                                <div><strong>Titolo originale: </strong>{result.original_title}</div>
+                                <div><strong>Titolo: </strong>{movie.title}</div>
+
+                                <div><strong>Titolo originale: </strong>{movie.original_title}</div>
+
                                 <div>
                                     <strong>Lingua: </strong>
-                                    <span className={`fi fi-${handleFLags(languageCustomFlags, result.original_language)}`}></span>
+                                    <span className={`fi fi-${handleFLags(languagesCodes, movie.original_language)}`}></span>
                                 </div>
-                                <div><strong>Voto: </strong>{result.vote_average}</div>
+
+                                <div><strong>Voto: </strong>{movie.vote_average}</div>
                             </li>
 
                         ))
 
                     }
                 </ul>
-            </div >
+            </section >
+
+            <section id="series" className="query-list">
+
+                <h2>Series</h2>
+
+                <ul>
+                    {
+
+                        series.map((serie, i) => (
+
+                            <li key={i} className="mb-1" >
+                                <div><strong>Titolo: </strong>{serie.name}</div>
+
+                                <div><strong>Titolo originale: </strong>{serie.original_name}</div>
+
+                                <div>
+                                    <strong>Lingua: </strong>
+                                    <span className={`fi fi-${handleFLags(languagesCodes, serie.original_language)}`}></span>
+                                </div>
+
+                                <div><strong>Voto: </strong>{serie.vote_average}</div>
+                            </li>
+
+                        ))
+
+                    }
+                </ul>
+            </section >
         </>
     );
 }
