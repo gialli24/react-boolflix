@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 export default function SearchPage() {
 
@@ -53,11 +54,17 @@ export default function SearchPage() {
     }
 
     /* hearts */
-    function renderHearts(n) {
+    function renderHearts(vote_average) {
+        const roundedVote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
+
         const heartList = [];
 
-        for (let i = 0; i < n; i++) {
-            heartList.push(<FontAwesomeIcon key={i} icon={faHeart} />);
+        for (let i = 0; i < 5; i++) {
+            if (i < roundedVote) {
+                heartList.push(<FontAwesomeIcon key={i} icon={faHeartSolid} />);
+            } else {
+                heartList.push(<FontAwesomeIcon key={i} icon={faHeartRegular} />);
+            }
         }
 
         return heartList;
@@ -83,8 +90,6 @@ export default function SearchPage() {
 
                             const { poster_path, title, original_title, original_language, vote_average } = movie;
 
-                            const vote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
-
                             return (
                                 <li key={i} className="mb-1" >
 
@@ -101,7 +106,7 @@ export default function SearchPage() {
 
                                     <div>
                                         <strong>Voto: </strong>
-                                        {renderHearts(vote)}
+                                        {renderHearts(vote_average)}
                                     </div>
                                 </li>
                             )
@@ -123,8 +128,6 @@ export default function SearchPage() {
 
                             const { poster_path, name, original_name, original_language, vote_average } = serie;
 
-                            const vote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
-
                             return (
                                 <li key={i} className="mb-1" >
 
@@ -141,7 +144,7 @@ export default function SearchPage() {
 
                                     <div>
                                         <strong>Voto: </strong>
-                                        {renderHearts(vote)}
+                                        {renderHearts(vote_average)}
                                     </div>
                                 </li>
                             )
