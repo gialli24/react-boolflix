@@ -2,6 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
+import { langs } from "../data/flags";
+
 function renderHearts(vote_average) {
     const roundedVote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
 
@@ -18,7 +20,11 @@ function renderHearts(vote_average) {
     return heartList;
 }
 
-export default function AppCard({ poster_path, title, original_title, handleFlag, vote_average }) {
+function handleFLag(code) {
+    return langs[code] || code;
+}
+
+export default function AppCard({ poster_path, title, original_title, lang, vote_average }) {
 
     return (
         <div className="card" >
@@ -33,7 +39,7 @@ export default function AppCard({ poster_path, title, original_title, handleFlag
 
                 <div>
                     <strong>Lingua: </strong>
-                    <span className={`fi fi-${handleFlag}`}></span>
+                    <span className={`fi fi-${handleFLag(lang)}`}></span>
                 </div>
 
                 <div>
