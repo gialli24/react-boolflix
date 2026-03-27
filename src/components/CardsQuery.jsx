@@ -1,4 +1,10 @@
+import { langs } from "../data/flags";
+
 import AppCard from "./AppCard";
+
+function handleFLag(code) {
+    return langs[code] || code;
+}
 
 export default function CardsQuery({ cards }) {
     return (
@@ -6,7 +12,13 @@ export default function CardsQuery({ cards }) {
             {
 
                 cards.map((data, i) => {
-                    <AppCard key={i} data={data} />
+                    const { poster_path, original_language, vote_average } = data;
+                    const title = data.title || data.name;
+                    const original_title = data.original_title || data.original_name;
+
+                    return (
+                        <AppCard key={i} poster_path={poster_path} title={title} original_title={original_title} handleFlag={() => handleFLag(original_language)} vote_average={vote_average} />
+                    );
                 })
 
             }

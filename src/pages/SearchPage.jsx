@@ -1,10 +1,6 @@
-import { useOutletContext } from 'react-router-dom';
-
 import CardsQuery from '../components/CardsQuery';
 
-export default function SearchPage() {
-
-    const { results } = useOutletContext();
+export default function SearchPage({ results }) {
 
     return (
         <main>
