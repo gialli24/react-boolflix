@@ -8,7 +8,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const baseURL = `https://api.themoviedb.org/3/`;
+const baseCastURL = `https://api.themoviedb.org/3/`;
+const genresMoviesEndpoint = `https://api.themoviedb.org/3/genre/movie/list?api_key=${TMDB_API_KEY}`
+const genresTvEndpoint = `https://api.themoviedb.org/3/genre/tv/list?api_key=${TMDB_API_KEY}`
 
 function renderHearts(vote_average) {
     const roundedVote = Math.floor(((5 - 1) * vote_average + 5) / (10 - 1));
@@ -30,20 +32,30 @@ function handleFLag(code) {
     return langs[code] || code;
 }
 
-export default function AppCard({ id, endpoint, poster_path, title, original_title, lang, vote_average }) {
+export default function AppCard({ id, endpoint, poster_path, title, original_title, lang, genre_ids, vote_average }) {
 
-    const [credits, setCredits] = useState([]);
+    const [cast, setCast] = useState([]);
+    const [genresList, setGenresList] = useState([]);
 
-    function fetchCredits(baseURL, endpoint, id) {
-        axios.get(baseURL + `${endpoint}/` + id + `/credits?api_key=${TMDB_API_KEY}`)
+    function fetchCast(baseCastURL, endpoint, id) {
+        axios.get(baseCastURL + `${endpoint}/` + id + `/credits?api_key=${TMDB_API_KEY}`)
             .then(response => {
-                setCredits(response.data.cast.slice(0, 5));
+                setCast(response.data.cast.slice(0, 4));
+            })
+            .catch(error => console.log(error));
+    }
+
+    function fetchGenres(endpoint) {
+        axios.get(endpoint)
+            .then(response => {
+                setGenresList(response.data.genres.filter(genre => genre_ids.includes(genre.id)).map(genre => genre.name));
             })
             .catch(error => console.log(error));
     }
 
     useEffect(() => {
-        fetchCredits(baseURL, endpoint, id);
+        fetchCast(baseCastURL, endpoint, id);
+        fetchGenres(genresMoviesEndpoint);
     }, []);
 
     return (
@@ -59,17 +71,32 @@ export default function AppCard({ id, endpoint, poster_path, title, original_tit
 
                 {
 
-                    credits.length > 0 &&
+                    genresList.length > 0 &&
 
                     <div>
-                        <strong>Attori: </strong>
+                        <strong>Generi: </strong>
                         {
-                            credits.map((credit, i) => (
-                                <span key={i}>{credit.name} {i !== credits.length - 1 ? "," : ""} </span>
+                            genresList.map((genre, i) => (
+                                <span key={i}>{genre} {i !== genresList.length - 1 ? "," : ""} </span>
                             ))
                         }
                     </div>
                 }
+
+                {
+
+                    cast.length > 0 &&
+
+                    <div>
+                        <strong>Attori: </strong>
+                        {
+                            cast.map((actor, i) => (
+                                <span key={i}>{actor.name} {i !== cast.length - 1 ? "," : ""} </span>
+                            ))
+                        }
+                    </div>
+                }
+
                 <div>
                     <strong>Lingua: </strong>
                     <span className={`fi fi-${handleFLag(lang)}`}></span>
