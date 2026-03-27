@@ -1,17 +1,18 @@
 import CardsQuery from '../components/CardsQuery';
 
-export default function SearchPage({ results }) {
+
+export default function SearchPage({ results, allGenres }) {
 
     const data = [
         {
             endpoint: "movie",
             title: "Movie",
-            data: results.movies
+            content: results.movies
         },
         {
             endpoint: "tv",
             title: "Series",
-            data: results.series
+            content: results.series
         }
     ]
 
@@ -19,19 +20,23 @@ export default function SearchPage({ results }) {
         <main>
 
             {
-                data.map((element, id) => (
+                data.map((section, i) => {
 
-                    <section key={id} className="query-list">
-                        <div className="container">
+                    const { title, endpoint, content } = section;
 
-                            <h2>{element.title}</h2>
+                    return (
+                        <section key={i} className="query-list" >
+                            <div className="container">
 
-                            <CardsQuery endpoint={element.endpoint} cards={element.data} />
+                                <h2>{title}</h2>
 
-                        </div>
-                    </section >
-                ))
+                                <CardsQuery endpoint={endpoint} cards={content} allGenres={allGenres} />
+
+                            </div>
+                        </section>
+                    );
+                })
             }
-        </main>
+        </main >
     );
 }

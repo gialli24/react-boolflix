@@ -1,19 +1,34 @@
 import AppCard from "./AppCard";
 
-export default function CardsQuery({ endpoint, cards }) {
+function handleGenres(endpoint, allGenres, thisGenres) {
+    const genres = [];
 
+    allGenres[endpoint].map(allGenre => {
+        thisGenres.filter(thisGenre => {
+            if (allGenre.id === thisGenre) {
+                genres.push(allGenre.name)
+            }
+        })
+    });
+
+    return genres;
+}
+
+export default function CardsQuery({ endpoint, cards, allGenres }) {
 
     return (
         <div className="cards-container">
             {
 
-                cards.map((data, i) => {
-                    const { id, poster_path, original_language, vote_average, genre_ids } = data;
-                    const title = data.title || data.name;
-                    const original_title = data.original_title || data.original_name;
+                cards.map((card, i) => {
+                    const { id, poster_path, original_language, vote_average, genre_ids } = card;
+                    const title = card.title || card.name;
+                    const original_title = card.original_title || card.original_name;
+
+                    const genres = handleGenres(endpoint, allGenres, genre_ids);
 
                     return (
-                        <AppCard key={i} id={id} endpoint={endpoint} poster_path={poster_path} title={title} original_title={original_title} lang={original_language} genre_ids={genre_ids} vote_average={vote_average} />
+                        <AppCard key={i} id={id} endpoint={endpoint} poster_path={poster_path} title={title} original_title={original_title} lang={original_language} genres={genres} vote_average={vote_average} />
                     );
                 })
 
