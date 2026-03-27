@@ -1,7 +1,7 @@
 import CardsQuery from '../components/CardsQuery';
 
 
-export default function SearchPage({ results, allGenres }) {
+export default function SearchPage({ results, allGenres, filteredGenre, setFilteredGenre }) {
 
     const data = [
         {
@@ -16,8 +16,26 @@ export default function SearchPage({ results, allGenres }) {
         }
     ]
 
+    const filterGenres = [...allGenres.movie, ...allGenres.tv];
+
     return (
         <main>
+
+            <div className="genres-filter">
+                <div className="container">
+
+                    <select name="filter-genres" value={filteredGenre} onChange={e => setFilteredGenre(e.target.value)}>
+                        <option value="">Filtra per genere</option>
+                        {
+                            filterGenres.map((genre, i) => (
+                                <option key={i} value={genre.id}>{genre.name}</option>
+                            ))
+                        }
+                    </select>
+
+                </div>
+            </div>
+
 
             {
                 data.map((section, i) => {
@@ -30,7 +48,7 @@ export default function SearchPage({ results, allGenres }) {
 
                                 <h2>{title}</h2>
 
-                                <CardsQuery endpoint={endpoint} cards={content} allGenres={allGenres} />
+                                <CardsQuery endpoint={endpoint} cards={content} allGenres={allGenres} filteredGenre={filteredGenre} />
 
                             </div>
                         </section>

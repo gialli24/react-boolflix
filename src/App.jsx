@@ -16,6 +16,7 @@ function getData(endpoint) {
 
 function App() {
   const [search, setSearch] = useState("");
+  const [filteredGenre, setFilteredGenre] = useState("");
 
   const [results, setResults] = useState({
     movies: [],
@@ -67,7 +68,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout search={search} setSearch={setSearch} handleSubmit={handleSubmit} />}>
-            <Route path="/" element={<SearchPage results={results} allGenres={allGenres} />} />
+            <Route path="/" element={<SearchPage results={results} allGenres={allGenres} filteredGenre={filteredGenre} setFilteredGenre={setFilteredGenre} />} />
           </Route>
         </Routes>
       </BrowserRouter>

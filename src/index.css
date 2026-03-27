@@ -61,7 +61,8 @@ header .container {
 }
 
 header form input,
-button {
+button,
+select {
   border: none;
   border-radius: 1rem;
 
@@ -127,4 +128,15 @@ section h2 {
 
 .cards-container .card>.data:hover {
   opacity: 1;
+}
+
+/* Filter */
+.genres-filter .filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+
+.genres-filter h3 {
+  margin: 1rem 0;
 }

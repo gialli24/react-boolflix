@@ -14,7 +14,7 @@ function handleGenres(endpoint, allGenres, thisGenres) {
     return genres;
 }
 
-export default function CardsQuery({ endpoint, cards, allGenres }) {
+export default function CardsQuery({ endpoint, cards, allGenres, filteredGenre }) {
 
     return (
         <div className="cards-container">
@@ -27,9 +27,25 @@ export default function CardsQuery({ endpoint, cards, allGenres }) {
 
                     const genres = handleGenres(endpoint, allGenres, genre_ids);
 
-                    return (
-                        <AppCard key={i} id={id} endpoint={endpoint} poster_path={poster_path} title={title} original_title={original_title} lang={original_language} genres={genres} vote_average={vote_average} />
-                    );
+                    let isGenre = true;
+
+                    if (filteredGenre) {
+                        isGenre = false;
+                        genre_ids.forEach(genre => {
+                            if (genre == filteredGenre) {
+                                isGenre = true;
+                            }
+                        })
+                    }
+
+
+                    if (isGenre) {
+                        return (
+                            <AppCard key={i} id={id} endpoint={endpoint} poster_path={poster_path} title={title} original_title={original_title} lang={original_language} genres={genres} vote_average={vote_average} />
+                        );
+                    }
+
+
                 })
 
             }
