@@ -22,21 +22,24 @@ export default function AppCard({ poster_path, title, original_title, handleFlag
 
     return (
         <div className="card" >
-
-            <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt="" />
-
-            <div><strong>Titolo: </strong>{title}</div>
-
-            <div><strong>Titolo originale: </strong>{original_title}</div>
-
-            <div>
-                <strong>Lingua: </strong>
-                <span className={`fi fi-${handleFlag}`}></span>
+            <div className="thumb">
+                <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt="" />
             </div>
 
-            <div>
-                <strong>Voto: </strong>
-                {renderHearts(vote_average)}
+            <div className="data">
+                <div><strong>Titolo: </strong>{title}</div>
+
+                <div><strong>Titolo originale: </strong>{original_title}</div>
+
+                <div>
+                    <strong>Lingua: </strong>
+                    <span className={`fi fi-${handleFlag}`}></span>
+                </div>
+
+                <div>
+                    <strong>Voto: </strong>
+                    {renderHearts(vote_average)}
+                </div>
             </div>
         </div>
     );

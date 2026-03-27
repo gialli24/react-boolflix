@@ -1,12 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
+
 /* CSS Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  font-family: "Google Sans", sans-serif;
 }
 
 img {
   max-width: 100%;
+}
+
+/* Scroll Bar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #4b4b4b;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 /* Utilities */
@@ -34,8 +60,23 @@ header .container {
   align-items: center;
 }
 
+header form input,
+button {
+  border: none;
+  border-radius: 1rem;
+
+  margin: 0 0.2rem;
+
+  padding: 0.5rem 1rem;
+
+  background-color: #4b4b4b;
+  color: #fff;
+}
+
 /* Main */
 main {
+  min-height: calc(100vh - 80px);
+
   background-color: #1e1e1e;
   color: #fff;
 }
@@ -49,9 +90,41 @@ section h2 {
 .cards-container {
   display: flex;
   flex-direction: row;
+  gap: 2rem;
+
   overflow-x: auto;
 }
 
 .cards-container>.card {
   min-width: 350px;
+
+  position: relative;
+}
+
+.cards-container>.card>.thumb>img {
+  width: 100%;
+}
+
+.cards-container .card>.data {
+  height: 100%;
+  width: 100%;
+
+  position: absolute;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
+  padding: 2rem;
+
+  opacity: 0;
+
+  transition: .35s;
+
+  background-color: rgba(0, 0, 0, 0.274);
+}
+
+.cards-container .card>.data:hover {
+  opacity: 1;
 }
