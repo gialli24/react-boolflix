@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
-import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons';
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { langs } from "../data/flags";
 
@@ -11,9 +11,9 @@ function renderHearts(vote_average) {
 
     for (let i = 0; i < 5; i++) {
         if (i < roundedVote) {
-            heartList.push(<FontAwesomeIcon key={i} icon={faHeartSolid} />);
+            heartList.push(<FontAwesomeIcon key={i} icon={faStarSolid} />);
         } else {
-            heartList.push(<FontAwesomeIcon key={i} icon={faHeartRegular} />);
+            heartList.push(<FontAwesomeIcon key={i} icon={faStarRegular} />);
         }
     }
 
@@ -29,7 +29,7 @@ export default function AppCard({ poster_path, title, original_title, lang, vote
     return (
         <div className="card" >
             <div className="thumb">
-                <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt="" />
+                <img src={"https://image.tmdb.org/t/p/w342" + poster_path} alt="" />
             </div>
 
             <div className="data">
